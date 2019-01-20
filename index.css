@@ -15,7 +15,7 @@
   }
   
   .hidden {
-    display: none;
+    display: none !important;
   }
   
   #shopping-list-item {
@@ -49,3 +49,9 @@
   .shopping-item__checked {
     text-decoration: line-through;
   }
+  #hide-checkbox {
+    border:1px solid #ccc;
+    padding:10px;
+    margin:0 0 10px;
+    display:block; 
+   }
