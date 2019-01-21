@@ -12,6 +12,7 @@ function generateItemElement(item, itemIndex, template) {
   return `
     <li class="js-item-index-element ${item.checked ? "shopping-item__checked" : ''}" data-item-index="${itemIndex}">
       <span class="shopping-item js-shopping-item">${item.name}</span>
+      <input type="text" class="edit" style="display:none"/>
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
@@ -26,9 +27,7 @@ function generateItemElement(item, itemIndex, template) {
 
 function generateShoppingItemsString(shoppingList) {
   console.log("Generating shopping list element");
-
   const items = shoppingList.map((item, index) => generateItemElement(item, index));
-  
   return items.join("");
 }
 
@@ -41,6 +40,7 @@ function renderShoppingList() {
 
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
+  //handleTextEdit();
 }
 
 
@@ -116,28 +116,39 @@ function handleCheckBox() {
     console.log( $('.js-shopping-list').find('.shopping-item__checked'))
     });
   }
- // function filterSearchItem(input) {
-//     return STORE.items.filter(item => item.name === input);
-//   }
+ function filterSearchItem(input) {
+    STORE.items === STORE.items.filter(item => item.name.includes(input));
+  }
 
 function handleSearchItem(){
-    //allows you to search for existing entries in the list
-        $(".topnav").on("keyup", function() {
-            event.preventDefault();
-            let value = $(event.currentTarget).val().toLowerCase();
-            $('.js-item-index-element').hide().has($({value})).show();
-    // // when the search bar is being typed in, queue this function        
+$('.topnav').submit(event =>{
+    console.log(`handleSearchItem is running`)
+    event.preventDefault();
+    const searchList =$('.js-search-list').val();
+    searchFilter(searchFilter);
+})      
+ renderShoppingList();   
+};
+// function filter(element) {
+//     var value = $(element).val().toLowerCase();
+//     $("shopping-list js-shopping-list > li").hide().filter(function() {
+//         return $(this).text().toLowerCase().indexOf(value) > -1;
+//     }).show();
+// }
 
-    // // the variable value the value of what is typed in the search bar and changed to lower case      
-    //       $(".js-shopping-list").filter(function() {
-    // // the whole list should be filter and toggled          
- console.log(`handleSearchItem is running`)
-    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    //       });
-    //     });
+function handleTextEdit() {
+// this function will allow users to edit the existing listed items       
+        $('.js-item-index-element').on('click', '.js-shopping-item', (function() {
+            console.log('handleTextEdit is running');
+//when selected on the shopping item, run this function 
+          $(this).hide().siblings('.edit').show().val($(this).text()).focus();
+          }));
+//the clicked on item will return the sibling items of what's clicked on, hide the js shopping item
+        $('.edit').focusout(function() {
+          $(this).hide().siblings('.js-shopping-item').show().text($(this).val());
+        });
+        ; 
         renderShoppingList();
-      
-})
 }
 
 
@@ -152,6 +163,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleCheckBox();
   handleSearchItem();
+  handleTextEdit();
 }
 
 // when the page loads, call `handleShoppingList`
