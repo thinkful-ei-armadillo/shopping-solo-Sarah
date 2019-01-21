@@ -116,6 +116,30 @@ function handleCheckBox() {
     console.log( $('.js-shopping-list').find('.shopping-item__checked'))
     });
   }
+ // function filterSearchItem(input) {
+//     return STORE.items.filter(item => item.name === input);
+//   }
+
+function handleSearchItem(){
+    //allows you to search for existing entries in the list
+        $(".topnav").on("keyup", function() {
+            event.preventDefault();
+            let value = $(event.currentTarget).val().toLowerCase();
+            $('.js-item-index-element').hide().has($({value})).show();
+    // // when the search bar is being typed in, queue this function        
+
+    // // the variable value the value of what is typed in the search bar and changed to lower case      
+    //       $(".js-shopping-list").filter(function() {
+    // // the whole list should be filter and toggled          
+ console.log(`handleSearchItem is running`)
+    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    //       });
+    //     });
+        renderShoppingList();
+      
+})
+}
+
 
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
@@ -126,7 +150,8 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
-handleCheckBox();
+  handleCheckBox();
+  handleSearchItem();
 }
 
 // when the page loads, call `handleShoppingList`
