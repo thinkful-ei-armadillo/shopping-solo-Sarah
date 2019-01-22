@@ -17,7 +17,7 @@ function generateItemElement(item, itemIndex, template) {
       item.checked ? 'shopping-item__checked' : ''
     }" data-item-index="${itemIndex}">
       <span class="shopping-item js-shopping-item">${item.name}</span>
-      
+      <input type="text" value="${item.name}" class="edit-text"/>
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
@@ -25,7 +25,7 @@ function generateItemElement(item, itemIndex, template) {
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
         </button>
-        <button class="shopping-item-delete js-item-edit">
+        <button class="shopping-item-edit js-item-edit">
             <span class="button-label">edit</span>
         </button>
       </div>
@@ -155,22 +155,36 @@ function handleSearchItem() {
 }
 
 function EditItemList(itemIndex, word) {
-  STORE.items.splice(itemIndex, 1, word);
+    //console.log(word,STORE.items[itemIndex]);
+  STORE.items.splice(itemIndex, 1, {name: word, checked: false});
 }
 
 function handleTextEdit() {
   // this function will allow users to edit the existing listed items
   //listen to the edit button, and run the function  for the li
-  $('.js-item-index-element').on('click', '.js-item-edit', function() {
+  $('.js-shopping-list').on('click', '.js-item-edit', function(event) {
     console.log('handleTextEdit is running');
     //make sure page doesn't stay in default
     event.preventDefault();
     // declare item index is the item that is being click on from getItemIndexFromElement func
-    let itemIndex = getItemIndexFromElement(event.target);
+    //let itemIndex = getItemIndexFromElement(event.target);
     // capture the new edited item to the input
     //let editedItem = generateItemElement(input) 
+    $(this).parent().siblings('.shopping-item').hide();
+    $(this).parent().siblings('.edit-text').show().focus();
 
-    renderShoppingList();
+    //renderShoppingList();
+  });
+
+  $('.js-shopping-list').on('keypress','.edit-text',function(event){
+      if(event.which == 13){
+          let editedItem = $(this).val();
+          $(this).hide();
+          let index = getItemIndexFromElement(event.target);
+          EditItemList(index,editedItem);
+          renderShoppingList();
+          //$(this).siblings('.shopping-item').text(editedItem).show();
+      }
   });
 }
 
