@@ -12,13 +12,16 @@ function generateItemElement(item, itemIndex, template) {
   return `
     <li class="js-item-index-element ${item.checked ? "shopping-item__checked" : ''}" data-item-index="${itemIndex}">
       <span class="shopping-item js-shopping-item">${item.name}</span>
-      <input type="text" class="edit" style="display:none"/>
+      
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
         </button>
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
+        </button>
+        <button class="shopping-item-delete js-item-edit">
+            <span class="button-label">edit</span>
         </button>
       </div>
     </li>`;
@@ -116,46 +119,51 @@ function handleCheckBox() {
     console.log( $('.js-shopping-list').find('.shopping-item__checked'))
     });
   }
- function filterSearchItem(input) {
-    STORE.items === STORE.items.filter(item => item.name.includes(input));
+ 
+  function filterSearchItem(input) {
+    STORE.filter(item => item.name.includes(input));
+    // Logic to update the list
   }
 
 function handleSearchItem(){
-$('.topnav').submit(event =>{
+$('.topnav').on("click", "button", event =>{
     console.log(`handleSearchItem is running`)
     event.preventDefault();
     const searchList =$('.js-search-list').val();
-    searchFilter(searchFilter);
+    filterSearchItem(searchList);
 })      
  renderShoppingList();   
 };
-// function filter(element) {
-//     var value = $(element).val().toLowerCase();
-//     $("shopping-list js-shopping-list > li").hide().filter(function() {
+// function handleSearchItem(element) {
+//     let value = $(element).val().toLowerCase();
+//     $("js-shopping-list > li").hide().filter(function() {
 //         return $(this).text().toLowerCase().indexOf(value) > -1;
 //     }).show();
 // }
 
-function handleTextEdit() {
-// this function will allow users to edit the existing listed items       
-        $('.js-item-index-element').on('click', '.js-shopping-item', (function() {
-            console.log('handleTextEdit is running');
-//when selected on the shopping item, run this function 
-          $(this).hide().siblings('.edit').show().val($(this).text()).focus();
-          }));
-//the clicked on item will return the sibling items of what's clicked on, hide the js shopping item
-        $('.edit').focusout(function() {
-          $(this).hide().siblings('.js-shopping-item').show().text($(this).val());
-        });
-        ; 
-        renderShoppingList();
+function EditItemList(itemIndex, word){
+    STORE.splice(itemIndex, 1, word);
 }
 
+function handleTextEdit() {
+ // this function will allow users to edit the existing listed items   
+ //listen to the edit button, and run the function  for the li  
+ $('.js-item-index-element').on('click', '.js-item-edit', (function() {
+    console.log('handleTextEdit is running');
+  //make sure page doesn't stay in default  
+    event.preventDefault
+// declare item index is the item that is being click on from getItemIndexFromElement func
+    let itemIndex= getItemIndexFromElement(event.target);
+ // capture the new edited item to the input
+ let editedItem =    
+  }));
 
-// this function will be our callback when the page loads. it's responsible for
-// initially rendering the shopping list, and activating our individual functions
-// that handle new item submission and user clicks on the "check" and "delete" buttons
-// for individual shopping list items.
+};
+
+
+
+
+
 function handleShoppingList() {
   renderShoppingList();
   handleNewItemSubmit();

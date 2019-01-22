@@ -11,13 +11,16 @@
     font-size: 17px;
   }
   .topnav input[type=text] {
-    float: right;
     padding: 6px;
     border: none;
     margin-top: 8px;
     margin-right: 16px;
     font-size: 17px;
     border: 1px solid grey;
+  }
+
+  .topnav{
+    float: right;
   }
 
   body {
@@ -73,3 +76,4 @@
     margin:0 0 10px;
     display:block; 
    }
+
