@@ -1,11 +1,13 @@
 'use strict';
 
-const STORE = [
+const STORE = {
+items : [
   {name: "apples", checked: false},
   {name: "oranges", checked: false},
   {name: "milk", checked: true},
   {name: "bread", checked: false}
-];
+]
+};
 
 
 function generateItemElement(item, itemIndex, template) {
@@ -39,7 +41,7 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
-  const shoppingListItemsString = generateShoppingItemsString(STORE);
+  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
 
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
@@ -49,7 +51,7 @@ function renderShoppingList() {
 
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
-  STORE.push({name: itemName, checked: false});
+  STORE.items.push({name: itemName, checked: false});
 }
 
 function handleNewItemSubmit() {
@@ -65,7 +67,7 @@ function handleNewItemSubmit() {
 
 function toggleCheckedForListItem(itemIndex) {
   console.log("Toggling checked property for item at index " + itemIndex);
-  STORE[itemIndex].checked = !STORE[itemIndex].checked;
+  STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
 
@@ -85,18 +87,10 @@ function handleItemCheckClicked() {
   });
 }
 
-// name says it all. responsible for deleting a list item.
+// responsible for deleting a list item.
 function deleteListItem(itemIndex) {
   console.log(`Deleting item at index  ${itemIndex} from shopping list`)
-
-  // as with `addItemToShoppingLIst`, this function also has the side effect of
-  // mutating the global STORE value.
-  //
-  // we call `.splice` at the index of the list item we want to remove, with a length
-  // of 1. this has the effect of removing the desired item, and shifting all of the
-  // elements to the right of `itemIndex` (if any) over one place to the left, so we
-  // don't have an empty space in our list.
-  STORE.splice(itemIndex, 1);
+  STORE.items.splice(itemIndex, 1);
 }
 
 
@@ -120,8 +114,12 @@ function handleCheckBox() {
     });
   }
  
+//we want STORE.tempItems to hold space for the items that are created from the search function
+// these will then be shown
+  //.val() of these?
+
   function filterSearchItem(input) {
-    STORE.filter(item => item.name.includes(input));
+    STORE.items = STORE.items.filter(item => item.name.includes(input));
     // Logic to update the list
   }
 
@@ -134,15 +132,10 @@ $('.topnav').on("click", "button", event =>{
 })      
  renderShoppingList();   
 };
-// function handleSearchItem(element) {
-//     let value = $(element).val().toLowerCase();
-//     $("js-shopping-list > li").hide().filter(function() {
-//         return $(this).text().toLowerCase().indexOf(value) > -1;
-//     }).show();
-// }
+
 
 function EditItemList(itemIndex, word){
-    STORE.splice(itemIndex, 1, word);
+    STOREitems.splice(itemIndex, 1, word);
 }
 
 function handleTextEdit() {
@@ -151,12 +144,12 @@ function handleTextEdit() {
  $('.js-item-index-element').on('click', '.js-item-edit', (function() {
     console.log('handleTextEdit is running');
   //make sure page doesn't stay in default  
-    event.preventDefault
+    event.preventDefault();
 // declare item index is the item that is being click on from getItemIndexFromElement func
     let itemIndex= getItemIndexFromElement(event.target);
  // capture the new edited item to the input
- let editedItem =    
-  }));
+ //let editedItem =    
+ }));
 
 };
 
